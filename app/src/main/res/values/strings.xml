@@ -4,4 +4,6 @@
     <string name="shop_label">商店</string>
     <string name="menu_home">Home</string>
     <string name="menu_shop">Shop</string>
+    <string name="menu_create">Create</string>
+    <string name="menu_search">Search</string>
 </resources>

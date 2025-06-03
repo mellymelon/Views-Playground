@@ -1,6 +1,8 @@
 package com.example.viewsplayground
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -22,17 +24,6 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        //用nav_graph.xml就不需要这个
-//        navController.graph =
-//            navController.createGraph(startDestination = "home") {
-//                fragment<HomeFragment>("home") {
-//                    label = resources.getString(R.string.home_label)
-//                }
-//                fragment<ShopFragment>("shop") {
-//                    label = resources.getString(R.string.shop_label)
-//                }
-//            }
-
         //关联BottomNavigationView和navHostFragment
         findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -44,28 +35,26 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "查看Shop", Toast.LENGTH_SHORT).show()
             }
         }
-
-        //配置好nav_graph就不需要这个
-        // Logic to load the starting destination when the Activity is first created
-//        if (savedInstanceState == null) {
-//            val homeFragment = HomeFragment()
-//            supportFragmentManager.beginTransaction()
-//                .add(R.id.nav_host_fragment, homeFragment, homeFragment.TAG)
-//                .commit()
-//        }
     }
 
-    //如果nav_graph有action就不再需要这个方法
-//    fun navigateToShop() {
-//        val fragment = ShopFragment()
-//        val args = Bundle().apply {
-//            putInt("KEY_PRODUCT_ID", 123)
-//        }
-//        fragment.arguments = args
-//
-//        supportFragmentManager.beginTransaction()
-//            .addToBackStack(fragment.TAG)
-//            .replace(R.id.shopFragment, fragment, fragment.TAG)
-//            .commit()
-//    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_create -> {
+            Toast.makeText(this, "创建...", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        R.id.action_search -> {
+            Toast.makeText(this, "搜索...", Toast.LENGTH_SHORT).show()
+            true
+        }
+
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+    }
 }
