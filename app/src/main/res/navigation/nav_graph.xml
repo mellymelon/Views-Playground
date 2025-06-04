@@ -11,16 +11,23 @@
         android:label="HomeFragment"
         tools:layout="@layout/home_fragment">
         <action
-            android:id="@+id/navigate_to_shop"
-            app:destination="@id/shopFragment" />
+            android:id="@+id/navigate_to_detail"
+            app:destination="@id/detailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/shopFragment"
         android:name="com.example.viewsplayground.ShopFragment"
         android:label="ShopFragment"
-        tools:layout="@layout/shop_fragment">
-        <!--        <argument-->
-        <!--            android:name="product_id"-->
-        <!--            app:argType="integer" />-->
+        tools:layout="@layout/shop_fragment" />
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.viewsplayground.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/detail_fragment">
+        <argument
+            android:name="detail_string"
+            app:argType="string" />
     </fragment>
 </navigation>
