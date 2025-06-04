@@ -6,8 +6,10 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.widget.Toolbar
 
 val Any.TAG: String
     get() {
@@ -23,6 +25,13 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
+
+        //进入非topLevel页面后在导航栏显示返回按钮
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.shopFragment))
+        findViewById<Toolbar>(R.id.the_toolbar).setupWithNavController(
+            navController,
+            appBarConfiguration
+        )
 
         //关联BottomNavigationView和navHostFragment
         findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
