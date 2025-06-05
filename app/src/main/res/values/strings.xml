@@ -6,4 +6,6 @@
     <string name="menu_shop">Shop</string>
     <string name="menu_create">Create</string>
     <string name="menu_search">Search</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_share">Share</string>
 </resources>
