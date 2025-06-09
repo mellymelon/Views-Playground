@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
 
 val Any.TAG: String
     get() {
@@ -17,6 +18,8 @@ val Any.TAG: String
     }
 
 class MainActivity : AppCompatActivity() {
+    lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -24,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
 
         //进入非topLevel页面后在导航栏显示返回按钮
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.shopFragment))
@@ -53,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_create -> {
-            Toast.makeText(this, "创建...", Toast.LENGTH_SHORT).show()
+            navController.navigate(R.id.navigate_to_add_flower)
             true
         }
 

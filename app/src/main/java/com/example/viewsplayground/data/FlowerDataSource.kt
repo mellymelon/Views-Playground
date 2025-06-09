@@ -21,6 +21,21 @@ class FlowerDataSource(resources: Resources) {
         return null
     }
 
+    fun getRandomFlowerImageAsset(): Int? {
+        return initialFlowerList[initialFlowerList.indices.random()].image
+    }
+
+    fun addFlower(flower: Flower) {
+        val curList = flowersLiveData.value
+        if (curList == null) {
+            flowersLiveData.postValue(listOf(flower))
+        } else {
+            val updatedList = curList.toMutableList()
+            updatedList.add(0, flower)
+            flowersLiveData.postValue(updatedList)
+        }
+    }
+
     companion object {
         //private var INSTANCE: DataSource? = null
         private lateinit var INSTANCE: FlowerDataSource

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/navigate_to_detail"
             app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/navigate_to_add_flower"
+            app:destination="@id/addFlowerFragment" />
     </fragment>
 
     <fragment
@@ -30,4 +33,10 @@
             android:name="flower_id"
             app:argType="long" />
     </fragment>
+
+    <fragment
+        android:id="@+id/addFlowerFragment"
+        android:name="com.example.viewsplayground.AddFlowerFragment"
+        android:label="Add Flower"
+        tools:layout="@layout/add_flower_fragment" />
 </navigation>

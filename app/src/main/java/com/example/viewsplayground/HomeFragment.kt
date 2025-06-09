@@ -1,9 +1,11 @@
 package com.example.viewsplayground
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -42,5 +44,12 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
                 headerAdapter.updateFlowerCount(it.size)
             }
         })
+
+        //获取AddFlowerFragment的输入
+        setFragmentResultListener("add_flower") { requestKey, bundle ->
+            val flowerName = bundle.getString("flower_name") ?: ""
+            val flowerDescription = bundle.getString("flower_description") ?: ""
+            viewModel.insertFlower(flowerName, flowerDescription)
+        }
     }
 }

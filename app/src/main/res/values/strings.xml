@@ -43,4 +43,8 @@
     <string name="flower_image_content_description">Image of flower</string>
     <string name="flower_finder">Flower Finder</string>
     <string name="flower_string">Flowers</string>
+    <string name="add_flower">Add Flower</string>
+    <string name="flower_name_edit_label">Flower Name</string>
+    <string name="flower_description_edit_label">Flower Description</string>
+    <string name="done_button_text">Done</string>
 </resources>
