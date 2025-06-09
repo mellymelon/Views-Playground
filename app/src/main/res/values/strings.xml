@@ -47,4 +47,5 @@
     <string name="flower_name_edit_label">Flower Name</string>
     <string name="flower_description_edit_label">Flower Description</string>
     <string name="done_button_text">Done</string>
+    <string name="remove_this_flower">Remove this flower</string>
 </resources>

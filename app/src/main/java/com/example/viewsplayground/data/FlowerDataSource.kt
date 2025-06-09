@@ -36,6 +36,15 @@ class FlowerDataSource(resources: Resources) {
         }
     }
 
+    fun removeFlower(flower: Flower) {
+        val curList = flowersLiveData.value
+        if (curList != null) {
+            val updatedList = curList.toMutableList()
+            updatedList.remove(flower)
+            flowersLiveData.postValue(updatedList)
+        }
+    }
+
     companion object {
         //private var INSTANCE: DataSource? = null
         private lateinit var INSTANCE: FlowerDataSource

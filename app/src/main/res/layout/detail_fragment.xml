@@ -29,4 +29,12 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         tools:text="@string/flower1_description" />
+
+    <Button
+        android:id="@+id/remove_flower_button"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/remove_this_flower" />
 </LinearLayout>
