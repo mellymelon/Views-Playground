@@ -41,4 +41,6 @@
     <string name="flower12_description">There are over 150 species of tulips.</string>
 
     <string name="flower_image_content_description">Image of flower</string>
+    <string name="flower_finder">Flower Finder</string>
+    <string name="flower_string">Flowers</string>
 </resources>
