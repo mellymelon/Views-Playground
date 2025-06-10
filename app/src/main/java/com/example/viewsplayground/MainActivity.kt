@@ -10,6 +10,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 
 val Any.TAG: String
@@ -37,15 +38,15 @@ class MainActivity : AppCompatActivity() {
         )
 
         //关联BottomNavigationView和navHostFragment
-        findViewById<BottomNavigationView>(R.id.bottom_nav).setupWithNavController(navController)
+        val bottomBar = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomBar.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.homeFragment) {
                 Toast.makeText(this, "查看Home", Toast.LENGTH_SHORT).show()
             } else if (destination.id == R.id.shopFragment) {
-                //toolbar.visibility = View.VISIBLE
-                //bottomNavigationView.visibility = View.VISIBLE
                 Toast.makeText(this, "查看Shop", Toast.LENGTH_SHORT).show()
             }
+            bottomBar.isVisible = appBarConfiguration.topLevelDestinations.contains(destination.id)
         }
     }
 
