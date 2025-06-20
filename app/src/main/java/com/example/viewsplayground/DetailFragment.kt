@@ -1,6 +1,5 @@
 package com.example.viewsplayground
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,18 +13,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.viewsplayground.data.Flower
-import com.example.viewsplayground.data.FlowerDataSource
+import com.example.viewsplayground.flowerList.FlowerListViewModel
+import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
-    private val viewModel by viewModels<FlowerDetailViewModel> {
-        FlowerDetailViewModelFactory(requireActivity())
-    }
+    private val viewModel: FlowerListViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,21 +30,27 @@ class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
         val imageView = view.findViewById<ImageView>(R.id.detail_image_view)
         val descriptionView = view.findViewById<TextView>(R.id.flower_detail_description)
         val flowerId = arguments?.getLong("flower_id")
-        flowerId?.let {
-            val flower = viewModel.getFlowerById(it)
-            textView.text = flower?.name
-            imageView.setImageResource(flower?.image ?: R.drawable.rose)
-            descriptionView.text = flower?.description
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                flowerId?.let { id ->
+                    viewModel.getFlowerById(id).collect { flower ->
+                        textView.text = flower.name
+                        imageView.setImageResource(flower.image ?: R.drawable.rose)
+                        descriptionView.text = flower.description
+                    }
+                }
+            }
+        }
+        //绑定删除事件
+        flowerId?.let { id ->
             view.findViewById<Button>(R.id.remove_flower_button).setOnClickListener {
                 val builder = AlertDialog.Builder(requireActivity())
                 builder.setMessage("This flower will be removed from the list")
                 builder.setTitle("Remove this flower?")
                 builder.setPositiveButton("Confirm") { dialog, which ->
-                    if (flower != null) {
-                        viewModel.removeFlower(flower)
-                        findNavController().popBackStack()
-                    }
+                    viewModel.removeFlower(flowerId)
+                    findNavController().popBackStack()
                 }.setNegativeButton("Cancel") { dialog, which ->
 
                 }
@@ -78,25 +81,5 @@ class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
         else -> {
             false
         }
-    }
-}
-
-class FlowerDetailViewModel(private val dataSource: FlowerDataSource) : ViewModel() {
-    fun getFlowerById(id: Long): Flower? {
-        return dataSource.getFlowerById(id)
-    }
-
-    fun removeFlower(flower: Flower) {
-        dataSource.removeFlower(flower)
-    }
-}
-
-class FlowerDetailViewModelFactory(private val ctx: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        @Suppress("UNCHECKED_CAST")
-        if (modelClass.isAssignableFrom(FlowerDetailViewModel::class.java)) {
-            return FlowerDetailViewModel(dataSource = FlowerDataSource.getDataSource(ctx.resources)) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
