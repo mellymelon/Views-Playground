@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 @HiltViewModel
 class FlowerListViewModel @Inject internal constructor(private val flowerRepository: FlowerRepository) :
@@ -29,11 +30,11 @@ class FlowerListViewModel @Inject internal constructor(private val flowerReposit
         flowerRepository.add(flower)
     }
 
-    fun getFlowerById(id: Long): Flow<Flower> {
+    fun getFlowerById(id: UUID): Flow<Flower> {
         return flowerRepository.getFlower(id)
     }
 
-    fun removeFlower(id: Long) = viewModelScope.launch {
+    fun removeFlower(id: UUID) = viewModelScope.launch {
         flowerRepository.delete(id)
     }
 }

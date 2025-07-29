@@ -36,7 +36,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         )
         val headerAdapter = HeaderAdapter()
         val flowersAdapter = FlowersAdapter { flower ->
-            val bundle = bundleOf("flower_id" to flower.id)
+            val bundle = bundleOf("flower_id" to flower.id.toString())
             findNavController().navigate(R.id.navigate_to_detail, bundle)
         }
         recyclerView.adapter = ConcatAdapter(headerAdapter, flowersAdapter)

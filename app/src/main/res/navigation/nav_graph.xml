@@ -31,7 +31,7 @@
         tools:layout="@layout/detail_fragment">
         <argument
             android:name="flower_id"
-            app:argType="long" />
+            app:argType="string" />
         <action
             android:id="@+id/navigate_to_add_flower"
             app:destination="@id/addFlowerFragment" />
@@ -47,7 +47,6 @@
             app:argType="string" />
         <argument
             android:name="flower_id"
-            android:defaultValue="-1L"
-            app:argType="long" />
+            app:argType="string" />
     </fragment>
 </navigation>

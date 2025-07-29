@@ -20,13 +20,13 @@ import com.example.viewsplayground.data.Flower
 import com.example.viewsplayground.flowerList.FlowerListViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
-import kotlin.random.Random
+import java.util.UUID
 
 class AddFlowerFragment : Fragment(R.layout.add_flower_fragment), MenuProvider {
     private lateinit var flowerNameInput: TextInputEditText
     private lateinit var flowerDescriptionInput: TextInputEditText
     private lateinit var addOrEditFlowerTitle: TextView
-    private var flowerId: Long? = null //nav_graph.xml里默认了-1
+    private var flowerId: String? = null
     private val viewModel: FlowerListViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,12 +44,12 @@ class AddFlowerFragment : Fragment(R.layout.add_flower_fragment), MenuProvider {
             requireActivity().invalidateMenu()
         }
         addOrEditFlowerTitle = view.findViewById(R.id.add_edit_flower_title)
-        flowerId = arguments?.getLong("flower_id")
-        if (flowerId != -1L) { //不等于默认的-1
+        flowerId = arguments?.getString("flower_id")
+        flowerId?.let {
             addOrEditFlowerTitle.text = getString(R.string.edit_flower)
             lifecycleScope.launch {
                 viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.getFlowerById(flowerId!!).collect { flower ->
+                    viewModel.getFlowerById(UUID.fromString(it)).collect { flower ->
                         flowerNameInput.setText(flower.name)
                         flowerDescriptionInput.setText(flower.description)
                     }
@@ -68,7 +68,7 @@ class AddFlowerFragment : Fragment(R.layout.add_flower_fragment), MenuProvider {
         } else {
             viewModel.insertFlower(
                 Flower(
-                    id = flowerId ?: Random.nextLong(),
+                    id = if (flowerId != null) UUID.fromString(flowerId) else UUID.randomUUID(),
                     name = flowerNameInput.text.toString(),
                     description = flowerDescriptionInput.text.toString(),
                     image = R.drawable.lily

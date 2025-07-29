@@ -21,21 +21,22 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.viewsplayground.flowerList.FlowerListViewModel
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
     private val viewModel: FlowerListViewModel by activityViewModels()
-    var flowerId: Long? = null
+    var flowerId: String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val textView = view.findViewById<TextView>(R.id.detail_text_view)
         val imageView = view.findViewById<ImageView>(R.id.detail_image_view)
         val descriptionView = view.findViewById<TextView>(R.id.flower_detail_description)
-        flowerId = arguments?.getLong("flower_id")
+        flowerId = arguments?.getString("flower_id")
         flowerId?.let {
             lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.getFlowerById(it).collect { flower ->
+                    viewModel.getFlowerById(UUID.fromString(it)).collect { flower ->
                         textView.text = flower.name
                         imageView.setImageResource(flower.image ?: R.drawable.rose)
                         descriptionView.text = flower.description
@@ -50,7 +51,7 @@ class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
                 builder.setMessage("This flower will be removed from the list")
                 builder.setTitle("Remove this flower?")
                 builder.setPositiveButton("Confirm") { dialog, which ->
-                    viewModel.removeFlower(id)
+                    viewModel.removeFlower(UUID.fromString(id))
                     findNavController().popBackStack()
                 }.setNegativeButton("Cancel") { dialog, which ->
 
@@ -71,7 +72,7 @@ class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
     override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
         R.id.action_detail_edit -> {
             val bundle = bundleOf(
-                "flower_id" to flowerId,
+                "flower_id" to flowerId.toString(),
                 "titleAddOrEditFlower" to getString(R.string.edit_flower)
             )
             findNavController().navigate(R.id.navigate_to_add_flower, bundle)

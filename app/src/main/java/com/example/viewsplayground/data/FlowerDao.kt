@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 @Dao
 interface FlowerDao {
@@ -13,11 +14,11 @@ interface FlowerDao {
     suspend fun add(flower: Flower): Long
 
     @Query("DELETE FROM flowers WHERE id = :id")
-    suspend fun delete(id: Long)
+    suspend fun delete(id: UUID)
 
     @Query("SELECT * FROM flowers")
     fun getAll(): Flow<List<Flower>>
 
     @Query("SELECT * FROM flowers WHERE id == :id")
-    fun getFlower(id: Long): Flow<Flower>
+    fun getFlower(id: UUID): Flow<Flower>
 }
