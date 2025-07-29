@@ -6,6 +6,7 @@
     android:paddingHorizontal="16dp">
 
     <TextView
+        android:id="@+id/add_edit_flower_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="16dp"

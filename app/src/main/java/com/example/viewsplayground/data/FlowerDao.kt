@@ -2,12 +2,14 @@ package com.example.viewsplayground.data
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FlowerDao {
-    @Insert
+    //存在就替换，相当于update
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun add(flower: Flower): Long
 
     @Query("DELETE FROM flowers WHERE id = :id")

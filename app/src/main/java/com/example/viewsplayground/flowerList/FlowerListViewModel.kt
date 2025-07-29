@@ -2,7 +2,6 @@ package com.example.viewsplayground.flowerList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.viewsplayground.R
 import com.example.viewsplayground.data.Flower
 import com.example.viewsplayground.data.FlowerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.random.Random
 
 @HiltViewModel
 class FlowerListViewModel @Inject internal constructor(private val flowerRepository: FlowerRepository) :
@@ -27,15 +25,8 @@ class FlowerListViewModel @Inject internal constructor(private val flowerReposit
         }
     }
 
-    fun insertFlower(name: String, description: String) = viewModelScope.launch {
-        flowerRepository.add(
-            Flower(
-                Random.nextLong(),
-                name,
-                R.drawable.lily,
-                description = description
-            )
-        )
+    fun insertFlower(flower: Flower) = viewModelScope.launch {
+        flowerRepository.add(flower)
     }
 
     fun getFlowerById(id: Long): Flow<Flower> {

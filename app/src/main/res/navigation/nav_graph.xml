@@ -32,11 +32,22 @@
         <argument
             android:name="flower_id"
             app:argType="long" />
+        <action
+            android:id="@+id/navigate_to_add_flower"
+            app:destination="@id/addFlowerFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/addFlowerFragment"
         android:name="com.example.viewsplayground.AddFlowerFragment"
-        android:label="Add Flower"
-        tools:layout="@layout/add_flower_fragment" />
+        android:label="{titleAddOrEditFlower}"
+        tools:layout="@layout/add_flower_fragment">
+        <argument
+            android:name="titleAddOrEditFlower"
+            app:argType="string" />
+        <argument
+            android:name="flower_id"
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </fragment>
 </navigation>

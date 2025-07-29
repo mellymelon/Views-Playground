@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -23,18 +24,18 @@ import kotlinx.coroutines.launch
 
 class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
     private val viewModel: FlowerListViewModel by activityViewModels()
+    var flowerId: Long? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val textView = view.findViewById<TextView>(R.id.detail_text_view)
         val imageView = view.findViewById<ImageView>(R.id.detail_image_view)
         val descriptionView = view.findViewById<TextView>(R.id.flower_detail_description)
-        val flowerId = arguments?.getLong("flower_id")
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                flowerId?.let { id ->
-                    viewModel.getFlowerById(id).collect { flower ->
+        flowerId = arguments?.getLong("flower_id")
+        flowerId?.let {
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.getFlowerById(it).collect { flower ->
                         textView.text = flower.name
                         imageView.setImageResource(flower.image ?: R.drawable.rose)
                         descriptionView.text = flower.description
@@ -49,7 +50,7 @@ class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
                 builder.setMessage("This flower will be removed from the list")
                 builder.setTitle("Remove this flower?")
                 builder.setPositiveButton("Confirm") { dialog, which ->
-                    viewModel.removeFlower(flowerId)
+                    viewModel.removeFlower(id)
                     findNavController().popBackStack()
                 }.setNegativeButton("Cancel") { dialog, which ->
 
@@ -69,7 +70,11 @@ class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
         R.id.action_detail_edit -> {
-            Toast.makeText(requireActivity(), "编辑...", Toast.LENGTH_SHORT).show()
+            val bundle = bundleOf(
+                "flower_id" to flowerId,
+                "titleAddOrEditFlower" to getString(R.string.edit_flower)
+            )
+            findNavController().navigate(R.id.navigate_to_add_flower, bundle)
             true
         }
 
@@ -78,8 +83,6 @@ class DetailFragment : Fragment(R.layout.detail_fragment), MenuProvider {
             true
         }
 
-        else -> {
-            false
-        }
+        else -> false
     }
 }

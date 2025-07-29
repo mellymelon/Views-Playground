@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -60,13 +59,6 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
                     }
                 }
             }
-        }
-
-        //获取AddFlowerFragment的输入
-        setFragmentResultListener("add_flower") { requestKey, bundle ->
-            val flowerName = bundle.getString("flower_name") ?: ""
-            val flowerDescription = bundle.getString("flower_description") ?: ""
-            viewModel.insertFlower(flowerName, flowerDescription)
         }
     }
 }

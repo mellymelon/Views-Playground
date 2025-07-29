@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -59,7 +60,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_create -> {
-            navController.navigate(R.id.navigate_to_add_flower)
+            val bundle = bundleOf("titleAddOrEditFlower" to getString(R.string.add_flower))
+            navController.navigate(R.id.navigate_to_add_flower, bundle)
             true
         }
 
